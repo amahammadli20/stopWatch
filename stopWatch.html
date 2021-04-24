@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Watch</title>
+    <style>
+        .lap-container{
+            width: 600px;
+            border: 3px solid rgb(204, 114, 11);
+            min-height:200px;
+            background-color: lightslategray;
+        }
+
+        .main-div{
+            background-color:rgb(19, 9, 82);
+            width: 800px;
+            min-height: 450px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+        
+
+        button{
+            width: 100px;
+            padding: 10px;
+            border: 3px solid rgb(204, 114, 11);
+            font-size: 17px;
+            background-color: lightslategray;
+            color:rgb(19, 9, 82);
+            font-weight: bolder;
+        }
+
+        .currentTime{
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .buttons-div{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .currentTime-displayment{
+            font-size: 17px;
+            color:rgb(204, 114, 11);
+            margin: 15px 0px;
+        }
+
+        #time-keeper{
+            font-size: 55px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            display: flex;
+            justify-content: center;
+            color: rgb(19, 9, 82);
+            text-shadow: 1px 1px grey;
+        }
+    </style>
+</head>
+<body>
+    <h1 id = "time-keeper">Time Keeper</h1>
+    <div class = "main-div">
+        <div class = "sub-div">
+            <div class = "buttons-div">
+                <button id = "startButton">Start</button>
+                <button id = "stopButton">Stop</button>
+                <button id = "resetButton">Reset</button>
+                <button id = "lapButton">Lap</button>
+            </div>
+            <div class = "currentTime-displayment">00:00</div>
+            <div class = "lap-container"></div>
+        </div>
+    </div>
+
+    <script>
+        var time = 0;
+        var interval = undefined;
+        var lapCounter = 0;
+
+        document.querySelector("#startButton").onclick = function(){
+            clearInterval(interval);
+            interval = setInterval(function(){
+            //console.log(time++);
+            time++;
+
+            var correctTime = displayTimeCorrectly(time);
+            document.querySelector(".currentTime-displayment").innerHTML = correctTime;
+            }, 1000);
+        }
+        
+
+        document.querySelector("#stopButton").onclick = function(){
+            clearInterval(interval);
+        }
+
+        document.querySelector("#resetButton").onclick = function(){
+           time = 0;
+           lapCounter = 0;
+           document.querySelector(".lap-container").innerHTML = "";
+
+           var correctTime = displayTimeCorrectly(time);
+           document.querySelector(".currentTime-displayment").innerHTML = correctTime;
+        }
+
+        document.querySelector("#lapButton").onclick = function(){
+            var lapValue = document.createElement('p');
+            lapValue.innerHTML = "Lap" + lapCounter + ": " + displayTimeCorrectly(time);
+            lapValue.style.color = 'rgb(19, 9, 82)';
+            lapValue.style.fontSize = '20px';
+            lapValue.style.fontWeight = 'bolder';
+            lapValue.style.marginLeft = '10px';
+            var lapContainer = document.querySelector(".lap-container");
+            lapContainer.append(lapValue);
+            lapCounter++;
+        }
+        
+        var displayTimeCorrectly = function(t){
+            var minutes = Math.floor(t / 60);
+            var seconds = t - minutes;
+
+            if(seconds < 10){
+                seconds = "0" + seconds;
+            }
+
+            if(minutes < 10){
+                minutes = "0" + minutes;
+            }
+            return minutes + ":" + seconds;
+        }
+    </script>
+</body>
+</html>
